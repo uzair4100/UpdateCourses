@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <script>
+        window.$ = window.jQuery = require('jquery')
+        require('jquery-ui-dist/jquery-ui')
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Course</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <!-- Include the Quill library -->
+    <script src="https://cdn.quilljs.com/1.0.0/quill.js"></script>
+    <script src="/dist/quill.htmlEditButton.min.js"></script>
+    <!-- Include Quill stylesheet -->
+    <link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
+    <!--bootsrap toggle-->
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div id="wrapper" class="mt-2">
+
+            <div id="wrapper-inner">
+
+                <div class="row">
+
+                    <div class="col-md-2">
+                        <div id="paths">
+                            <!--Start Courses-->
+                            <div id="courses">
+                                <h4 class="h5 mb-1">Courses</h4>
+
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" name="course">
+                                    <label class="form-check-label" for="materialGroupExample1">arabic</label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" name="course">
+                                    <label class="form-check-label">chinese</label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" name="course">
+                                    <label class="form-check-label" for="materialGroupExample2">chineseFL</label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" name="course">
+                                    <label class="form-check-label">french</label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" name="course">
+                                    <label class="form-check-label">italian</label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" name="course">
+                                    <label class="form-check-label">german</label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" name="course">
+                                    <label class="form-check-label">greek</label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" name="course">
+                                    <label class="form-check-label">hindi</label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" name="course">
+                                    <label class="form-check-label">indonesian</label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" name="course">
+                                    <label class="form-check-label">indonesianFL</label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" name="course">
+                                    <label class="form-check-label">latin</label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" name="course">
+                                    <label class="form-check-label">spanish</label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" name="course">
+                                    <label class="form-check-label">japanese</label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" name="course">
+                                    <label class="form-check-label">japaneseFL</label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" name="course">
+                                    <label class="form-check-label">croatian</label>
+                                </div>
+                            </div>
+
+                            <!--End Courses-->
+
+                            <!--Start year-->
+                            <div id="year">
+                                <h4 class="h5 mb-1">Year</h4>
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" name="year">
+                                    <label class="form-check-label" for="year7">year7</label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" name="year">
+                                    <label class="form-check-label" for="year8">year8</label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" name="year">
+                                    <label class="form-check-label" for="year9">year9</label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" name="year">
+                                    <label class="form-check-label" for="year10">year10</label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" name="year">
+                                    <label class="form-check-label" for="year11">year11</label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" name="year">
+                                    <label class="form-check-label" for="year12">year12</label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" name="year">
+                                    <label class="form-check-label" for="yearacc1">yearacc1</label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" name="year">
+                                    <label class="form-check-label" for="yearacc2">yearacc2</label>
+                                </div>
+                            </div>
+                            <!--End year-->
+                        </div>
+
+                        <!--view buttons-->
+                        <div id="view_files" class="my-1 bg-white">
+                            <a href="https://getbootstrap.com/docs/4.0/getting-started/download/" id="resource_file_link"><button class="btn btn-secondary text-bold mb-1">View Resource File</button></a>
+                            <a href="https://getbootstrap.com/docs/4.0/getting-started/download/" id="alert_file_link"><button class="btn btn-danger text-bold mb-1">View Alert File</button></a>
+                            <a href="https://getbootstrap.com/docs/4.0/getting-started/download/" id="news_file_link"><button class="btn btn-info text-bold mb-1">View News File</button></a>
+                            <a href="https://getbootstrap.com/docs/4.0/getting-started/download/" id="duedates_file_link"><button class="btn btn-warning text-bold">View Timetable File</button></a>
+                        </div>
+
+                    </div>
+                    <!--end col-2 -->
+
+                    <div class="col-md-10">
+
+                        <!--Top buttons-->
+                        <div id="topButtons" class="d-flex justify-content-between align-items-center">
+
+                            <ul class="nav nav-pills d-flex justify-content-between" id="pills-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="tabs-1" data-toggle="pill" href="#link">Resource.html</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tabs-2" data-toggle="pill" href="#alertSection">Alert.html</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tabs-3" data-toggle="pill" href="#newsSection">News.html</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tabs-4" data-toggle="pill" href="#duedatesFile">Duedates.html</a>
+                                </li>
+                            </ul>
+
+                            <!--page title-->
+                            <div class="h2 text-bold text-primary" id="courseName"></div>
+
+
+
+                        </div>
+                        <!--end top buttons-->
+
+                        <!--start tab contents-->
+                        <div class="tab-content" id="pills-tabContent">
+                            <!--resource-->
+                            <div class="tab-pane active" id="link"> </div>
+
+                            <!--Alert-->
+                            <div id="alertSection" class="tab-pane">
+
+                                <div id="alertFile"></div>
+                            </div>
+
+                            <!--News-->
+                            <div id="newsSection" class="tab-pane">
+
+                                <div id="newsFile"></div>
+                            </div>
+
+                            <!--<textarea id="newsFile" name="news" cols="30" rows="10" class="tab-pane"></textarea>-->
+
+                            <!--duedates-->
+                            <div id="duedatesFile" class="tab-pane"></div>
+                        </div>
+                        <!--End tab contents-->
+
+                    </div>
+                    <!--End col-md-10-->
+                </div>
+                <!--End row-->
+            </div>
+            <!--End wrapper inner-->
+
+            <!--Choose file and name of file-->
+            <div class="my-2">
+                <div class="d-flex justify-content-between">
+                    <!--Keep old file-->
+
+                    <div class="mb-2" id="keepOldFile">
+                        <label>Keep Old File</label>
+                        <input type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="danger" data-on="YES" data-off="NO">
+                    </div>
+                    <div class="mb-1" id="updateAlertFile">
+                        <label>Update Alert File</label>
+                        <input type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="danger" data-on="YES" data-off="NO">
+                    </div>
+                    <div class="mb-1" id="updateNewsFile">
+                        <label>Update News File</label>
+                        <input type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="danger" data-on="YES" data-off="NO">
+                    </div>
+                    <div class="mb-1" id="updateDuedatesFile">
+                        <label>Update Duedates File</label>
+                        <input type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="danger" data-on="YES" data-off="NO">
+                    </div>
+                    <div class="mb-1" id="updateResourceFile">
+                        <label>Update Resource File</label>
+                        <input type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="danger" data-on="YES" data-off="NO" checked>
+                    </div>
+                </div>
+                <!--input field-->
+                <div class="input-group mb-3" id="input_field">
+                    <div class="input-group-prepend" style="height: 80px;">
+                        <span class="input-group-text" id="basic-addon3">File Name</span>
+                    </div>
+                    <textarea class="form-control d-block" placeholder="e.g. Coursebook 1 , Workbook 1 , OLB" id="fileDisplayName" style="width: initial;"> </textarea>
+                    <input type="text" class="form-control" placeholder="e.g. (PDF) or (WS 1-8)" id="fileExtName">
+                </div>
+
+                <!--Choose or Drag File here-->
+                <div id="selectFile">
+                    <div id="cloud"><img src="images/cloud.png" width="65px" alt="icon"></div>
+                    <div id="selectedFileName">Drag File Here</div>
+                </div>
+
+            </div>
+
+            <!--buttons-->
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <button class="btn btn-primary btn-lg" id="submit">Update HTML</button>
+                <!--status-->
+                <div id="status">success</div>
+                <button class="btn btn-danger" id="clear">Clear</button>
+            </div>
+
+        </div>
+        <!--End wrapper -->
+
+
+        <ul class="dropdown" id="tasks">
+            <li class="list-group-item d-flex"><img src="https://img.icons8.com/cute-clipart/25/000000/left-up2.png" />Add Above</li>
+            <li class="list-group-item d-flex"><img src="https://img.icons8.com/cute-clipart/25/000000/left-down2.png" />Add Below</li>
+            <li class="list-group-item d-flex"><img src="https://img.icons8.com/nolan/25/edit--v1.png" />Edit</li>
+            <li class="list-group-item d-flex"><img src="https://img.icons8.com/nolan/25/delete-forever.png" />Delete</li>
+            <li class="list-group-item d-flex"><img src="https://img.icons8.com/officel/25/000000/comments.png" />Comment Out</li>
+            <li class="list-group-item d-flex"><img src="https://img.icons8.com/ultraviolet/25/000000/text.png" /> Copy Text </li>
+            <li class="list-group-item d-flex"><img src="https://img.icons8.com/nolan/25/html-5.png" />Copy HTML</li>
+            <li class="list-group-item d-flex"><img src="https://img.icons8.com/dusk/25/000000/add-column.png" />Make New Column</li>
+            <li class="list-group-item d-flex"><img src="https://img.icons8.com/dusk/25/000000/plus.png" />Add Here</li>
+        </ul>
+
+        <ul class="list-group" id="paste">
+            <li class="list-group-item"><img src="https://img.icons8.com/nolan/25/paste.png" /> Paste</li>
+        </ul>
+
+    </div>
+    <!--End container-->
+    <script type="text/javascript" src="jquery-ui.min.js"></script>
+    <script type="text/javascript" src="index.js"></script>
+    <script>
+        window.$ = window.jQuery = require('jquery');
+    </script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

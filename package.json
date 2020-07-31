@@ -1,0 +1,49 @@
+{
+    "name": "update_courses",
+    "version": "1.0.0",
+    "description": "update course files",
+    "main": "main.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "electron .",
+        "pack": "electron-builder --dir",
+        "dist": "electron-builder"
+    },
+    "build": {
+        "appId": "com.resource.quickstart",
+        "win": {
+            "target": "nsis"
+        },
+        "asar": "false"
+    },
+    "author": "uzair",
+    "license": "MIT",
+    "devDependencies": {
+        "cross-env": "^7.0.1",
+        "electron": "^8.3.2",
+        "electron-builder": "^22.4.0",
+        "electron-packager": "^14.2.1",
+        "electron-prebuilt": "^1.4.13"
+    },
+    "dependencies": {
+        "bootstrap-markdown-editor-4": "^3.0.0",
+        "cheerio": "^1.0.0-rc.3",
+        "copy": "^0.3.2",
+        "copyfiles": "^2.3.0",
+        "cpx": "^1.5.0",
+        "date-and-time": "^0.13.1",
+        "easymde": "^2.11.0",
+        "electron-build": "0.0.3",
+        "fs-copy-file": "^2.1.2",
+        "highlightjs": "^9.16.2",
+        "jquery": "^3.5.1",
+        "jquery-ui": "^1.12.1",
+        "jquery-ui-dist": "^1.12.1",
+        "marked": "^1.1.1",
+        "open": "^7.0.4",
+        "pretty": "^2.0.0",
+        "quill": "^1.3.7",
+        "recursive-copy": "^2.0.10",
+        "sortablejs": "^1.10.2"
+    }
+}
