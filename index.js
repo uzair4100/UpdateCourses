@@ -320,7 +320,7 @@ $(document).ready(function() {
                         thisElement.before(element + "\n");
                     }
                 }
-
+                displayOptions();
                 break;
 
             case "Add Below":
@@ -344,6 +344,7 @@ $(document).ready(function() {
                         thisElement.after("\n" + element);
                     }
                 }
+                displayOptions();
                 break;
 
             case "Edit":
@@ -373,6 +374,7 @@ $(document).ready(function() {
                         thisElement.text(fileDisplayName);
                     }
                 }
+                displayOptions();
                 break;
             case "Comment Out":
 
@@ -416,10 +418,7 @@ $(document).ready(function() {
         }
 
 
-        $("#selectedFileName").html("Drag File here");
-        $('#cloud').show();
-        $('#fileDisplayName').val("");
-        $('#fileDisplayName').focus();
+        
 
     });
 
@@ -580,7 +579,12 @@ $(document).ready(function() {
             $("#status").fadeOut(500);
         }, 3000);
     }
-
+function displayOptions() {
+    $("#selectedFileName").html("Drag File here");
+        $('#cloud').show();
+        $('#fileDisplayName').val("");
+        $('#fileDisplayName').focus();
+}
 
 
     //clear app
