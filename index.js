@@ -235,7 +235,12 @@ $(document).ready(function() {
                     //fileDisplayName = $('#fileDisplayName').val();
                     fileDisplayName = originalName;
                     oldFileName = path.basename(thisElement.attr('href'));
-                    fileToDelete = "\\\\vsl-file01\\coursesdev$\\courses\\2020\\" + course + "\\" + year + "\\resources\\" + oldFileName;
+                    if(path.extname(thisElement.attr('href')) == ".mp4"){
+                        fileToDelete = "\\\\vsl-file01\\coursesdev$\\courses\\2020\\" + course + "\\" + year + "\\resources\\video\\" + oldFileName;
+                    }else{
+                        fileToDelete = "\\\\vsl-file01\\coursesdev$\\courses\\2020\\" + course + "\\" + year + "\\resources\\" + oldFileName;
+                    }
+                    console.log(fileToDelete)
                 }
             }
             if (event.target.tagName.startsWith('H') || event.target.tagName == 'P' || event.target.tagName.startsWith('T')) {
@@ -268,7 +273,7 @@ $(document).ready(function() {
         console.log(taskSelected)
         $('#selectTask').prop("selected", true);
 
-        fileDisplayName = marked($('#fileDisplayName').val());
+        fileDisplayName = $('#fileDisplayName').val();
         fileExtension = $('#fileExtName').val();
 
         switch (taskSelected) {
@@ -280,7 +285,7 @@ $(document).ready(function() {
                     if (thisElement.attr('href')) {
 
                         oldFileName = path.basename(thisElement.attr('href'));
-                        fileToDelete = "\\\\vsl-file01\\coursesdev$\\courses\\2020\\" + course + "\\" + year + "\\resources\\" + oldFileName;
+                       // fileToDelete = "\\\\vsl-file01\\coursesdev$\\courses\\2020\\" + course + "\\" + year + "\\resources\\" + oldFileName;
                         //fileToDelete = path.join(require('os').homedir(), "/Desktop/resources/" + oldFileName);
                         thisElement.parent().remove();
                         if ($('#keepOldFile input').prop("checked") == false) { filesToDelete.push(fileToDelete) }
@@ -303,6 +308,7 @@ $(document).ready(function() {
                     //newPath.push(path.join(require('os').homedir(), "/Desktop/resources/" + filename));
                     filePath = '';
                 } else {
+                    fileDisplayName = marked($('#fileDisplayName').val());
                     element = fileDisplayName;
                 }
                 if (thisElement.attr('href')) {
@@ -325,6 +331,7 @@ $(document).ready(function() {
                     //newPath.push(path.join(require('os').homedir(), "/Desktop/resources/" + filename));
                     filePath = '';
                 } else {
+                    fileDisplayName = marked($('#fileDisplayName').val());
                     element = fileDisplayName;
                 }
                 if (thisElement.attr('href')) {
@@ -349,7 +356,6 @@ $(document).ready(function() {
                 if (filePath) {
 
                     oldFileName = path.basename(thisElement.attr('href'));
-                    fileToDelete = "\\\\vsl-file01\\coursesdev$\\courses\\2020\\" + course + "\\" + year + "\\resources\\" + oldFileName;
                     //fileToDelete = path.join(require('os').homedir(), "/Desktop/resources/" + oldFileName);
                     element = `<a href="${fullLink}">${fileDisplayName}</a>`;
                     console.log(element)

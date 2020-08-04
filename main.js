@@ -3,18 +3,17 @@ const url = require('url');
 const path = require('path');
 const dialog = electron.dialog;
 const ipc = electron.ipcMain;
-const { app, BrowserWindow } = electron;
+const { app, BrowserWindow, autoupdater } = electron;
 var mainWindow;
 const { shell } = require('electron')
-
 
 
 app.on('ready', function() {
     //create new window
     mainWindow = new BrowserWindow({
-        minWidth: 1320,
+        //  minWidth: 1320,
         width: 1320,
-        minHeight: 1050,
+        // minHeight: 1050,
         height: 1050,
         webPreferences: {
             nodeIntegration: true
