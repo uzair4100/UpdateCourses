@@ -145,8 +145,19 @@ $(document).ready(function() {
         });
         $(".box tbody").disableSelection();
 
-        //drag drop
+        //choose file
+        $('#chooseFile').click(function() {
+            ipc.send('selectFile-dialog')
+        })
+        ipc.on('selectFile-selected', function(event, file) {
 
+            filePath = file;
+            console.log(filePath)
+            processPath();
+
+        });
+
+        //drag drop
         $('#selectFile').on("dragover", (e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -180,29 +191,13 @@ $(document).ready(function() {
             console.log(files)
             console.log(files[0].path);
             filePath = files[0].path;
-            filename = path.basename(filePath);
-            $("#selectedFileName").html(filename);
-            $('#cloud').hide();
-            $("#selectedFileName").show();
-            fileExtension = path.extname(filePath).slice(1);
-            $('#fileDisplayName').val(filename);
-            $('#fileExtName').val("(" + fileExtension + ")");
-            fileDisplayName = $('#fileDisplayName').val();
-            // filesToAdd.push(filePath)
-            //newPath.push("\\\\vsl-file01\\coursesdev$\\courses\\2020\\" + course + "\\" + year + "\\resources\\" + filename);
-            //newPath = path.join(require('os').homedir(), "/Desktop/resources/" + filename);
-            if (fileExtension == "mp4") {
-                pathForFile = "\\\\vsl-file01\\coursesdev$\\courses\\2020\\" + course + "\\" + year + "\\resources\\video\\" + filename;
-                fullLink = "https://courses.languages.vic.edu.au/2020/" + course + "/" + year + "/resources/video/" + filename;
-            } else {
-                pathForFile = "\\\\vsl-file01\\coursesdev$\\courses\\2020\\" + course + "\\" + year + "\\resources\\" + filename;
-                fullLink = "https://courses.languages.vic.edu.au/2020/" + course + "/" + year + "/resources/" + filename;
-            }
+            processPath();
         });
 
 
 
-    });
+
+    }); //end change function
 
     //paste option
     $('#fileDisplayName').bind("contextmenu", function(event) {
@@ -219,7 +214,7 @@ $(document).ready(function() {
 
     })
 
-    $('#link,#alertFile,#newsFile,#duedatesFile').bind("contextmenu", function(event) {
+    $('#link,#duedatesFile').bind("contextmenu", function(event) {
 
         if (event.target) {
             if (event.target.tagName == 'A' || event.target.tagName == 'B') {
@@ -235,9 +230,9 @@ $(document).ready(function() {
                     //fileDisplayName = $('#fileDisplayName').val();
                     fileDisplayName = originalName;
                     oldFileName = path.basename(thisElement.attr('href'));
-                    if(path.extname(thisElement.attr('href')) == ".mp4"){
+                    if (path.extname(thisElement.attr('href')) == ".mp4") {
                         fileToDelete = "\\\\vsl-file01\\coursesdev$\\courses\\2020\\" + course + "\\" + year + "\\resources\\video\\" + oldFileName;
-                    }else{
+                    } else {
                         fileToDelete = "\\\\vsl-file01\\coursesdev$\\courses\\2020\\" + course + "\\" + year + "\\resources\\" + oldFileName;
                     }
                     console.log(fileToDelete)
@@ -285,7 +280,7 @@ $(document).ready(function() {
                     if (thisElement.attr('href')) {
 
                         oldFileName = path.basename(thisElement.attr('href'));
-                       // fileToDelete = "\\\\vsl-file01\\coursesdev$\\courses\\2020\\" + course + "\\" + year + "\\resources\\" + oldFileName;
+                        // fileToDelete = "\\\\vsl-file01\\coursesdev$\\courses\\2020\\" + course + "\\" + year + "\\resources\\" + oldFileName;
                         //fileToDelete = path.join(require('os').homedir(), "/Desktop/resources/" + oldFileName);
                         thisElement.parent().remove();
                         if ($('#keepOldFile input').prop("checked") == false) { filesToDelete.push(fileToDelete) }
@@ -418,7 +413,7 @@ $(document).ready(function() {
         }
 
 
-        
+
 
     });
 
@@ -579,14 +574,35 @@ $(document).ready(function() {
             $("#status").fadeOut(500);
         }, 3000);
     }
-function displayOptions() {
-    $("#selectedFileName").html("Drag File here");
-        $('#cloud').show();
+
+    function displayOptions() {
+        $("#selectedFileName").html("Drag File here");
+        $('#cloud, #chooseFile').show();
         $('#fileDisplayName').val("");
         $('#fileDisplayName').focus();
-}
+    }
 
-
+    function processPath() {
+        //process file path
+        filename = path.basename(filePath);
+        $("#selectedFileName").html(filename);
+        $('#cloud').hide();
+        $("#selectedFileName").show();
+        fileExtension = path.extname(filePath).slice(1);
+        $('#fileDisplayName').val(filename);
+        $('#fileExtName').val("(" + fileExtension + ")");
+        fileDisplayName = $('#fileDisplayName').val();
+        // filesToAdd.push(filePath)
+        //newPath.push("\\\\vsl-file01\\coursesdev$\\courses\\2020\\" + course + "\\" + year + "\\resources\\" + filename);
+        //newPath = path.join(require('os').homedir(), "/Desktop/resources/" + filename);
+        if (fileExtension == "mp4") {
+            pathForFile = "\\\\vsl-file01\\coursesdev$\\courses\\2020\\" + course + "\\" + year + "\\resources\\video\\" + filename;
+            fullLink = "https://courses.languages.vic.edu.au/2020/" + course + "/" + year + "/resources/video/" + filename;
+        } else {
+            pathForFile = "\\\\vsl-file01\\coursesdev$\\courses\\2020\\" + course + "\\" + year + "\\resources\\" + filename;
+            fullLink = "https://courses.languages.vic.edu.au/2020/" + course + "/" + year + "/resources/" + filename;
+        }
+    }
     //clear app
     $('#clear').click(function() {
         location.reload();

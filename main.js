@@ -3,10 +3,10 @@ const url = require('url');
 const path = require('path');
 const dialog = electron.dialog;
 const ipc = electron.ipcMain;
-const { app, BrowserWindow, autoupdater } = electron;
+const { app, BrowserWindow } = electron;
 var mainWindow;
 const { shell } = require('electron')
-
+    // 8e2565abef29d2adcab55689d4408fad7664ddf6
 
 app.on('ready', function() {
     //create new window
@@ -38,13 +38,20 @@ ipc.on('selectFile-dialog', function(event) {
         title: 'Choose File to Upload',
         buttonLabel: 'OK',
         properties: [
-            'openFile'
+            'openFile',
+            'multiSelections'
         ]
     };
+    /* dialog.showOpenDialog(window, selectFileOptions).then(function(file) {
+         event.sender.send('selectFile-selected', file[0]);
+         console.log(file);
+     }).catch(function() {
+         console.log("No File Selected")
+     })*/
     dialog.showOpenDialog(window, selectFileOptions, function(file) {
 
         if (file) {
-            event.sender.send('selectFile-selected', file);
+            event.sender.send('selectFile-selected', file[0]);
             console.log(file);
         } else { console.log("No File Selected") }
     });
