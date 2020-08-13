@@ -38,22 +38,19 @@ ipc.on('selectFile-dialog', function(event) {
         title: 'Choose File to Upload',
         buttonLabel: 'OK',
         properties: [
-            'openFile',
-            'multiSelections'
+            'openFile'
         ]
     };
-    /* dialog.showOpenDialog(window, selectFileOptions).then(function(file) {
-         event.sender.send('selectFile-selected', file[0]);
-         console.log(file);
-     }).catch(function() {
-         console.log("No File Selected")
-     })*/
-    dialog.showOpenDialog(window, selectFileOptions, function(file) {
+
+    dialog.showOpenDialog(window, selectFileOptions, function(file, err) {
 
         if (file) {
             event.sender.send('selectFile-selected', file[0]);
             console.log(file);
-        } else { console.log("No File Selected") }
+        } else {
+            event.sender.send('selectFile-selected', err)
+
+        }
     });
 
 });

@@ -146,15 +146,18 @@ $(document).ready(function() {
         $(".box tbody").disableSelection();
 
         //choose file
-        $('#chooseFile').click(function() {
+        $('#chooseFile').on('click', function() {
             ipc.send('selectFile-dialog')
         })
         ipc.on('selectFile-selected', function(event, file) {
-
-            filePath = file;
-            console.log(filePath)
-            processPath();
-
+            if (!file) {
+                $('#status').html("No File selected");
+                displayMessage()
+            } else {
+                filePath = file;
+                console.log(filePath)
+                processPath();
+            }
         });
 
         //drag drop
