@@ -14,7 +14,7 @@ app.on('ready', function() {
         //  minWidth: 1320,
         width: 1320,
         // minHeight: 1050,
-        height: 1050,
+        height: 925,
         webPreferences: {
             nodeIntegration: true
         }

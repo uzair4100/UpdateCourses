@@ -14,7 +14,7 @@ const marked = require('marked');
 $(document).ready(function() {
 
     $('#tasks').hide();
-    $('#view_files').hide();
+    $('.dropdown2').hide();
 
     //open links in default browser
     $(document).on('click', 'a[href^="http"]', function(event) {
@@ -41,9 +41,11 @@ $(document).ready(function() {
     $("#wrapper-inner").change(function() {
         course = $('#courses').find("input[type=radio]:checked").siblings('label').text();
         year = $('#year').find("input[type=radio]:checked").siblings('label').text();
+
         $("#newsSection").empty();
         $("#alertSection").empty();
 
+        //load quill editor in alert and news file
         $('<div id="alertFile"></div>').appendTo('#alertSection');
         $('<div id="newsFile"></div>').appendTo('#newsSection');
 
@@ -53,11 +55,12 @@ $(document).ready(function() {
         var news_file_link = "https://courses.languages.vic.edu.au/2020/" + course + "/" + year + "/news.html";
         var duedates_file_link = "https://courses.languages.vic.edu.au/2020/" + course + "/" + year + "/duedates.html";
 
-        //activate button links
+        //activate live button links
         $('#resource_file_link').attr('href', resource_file_link);
         $('#alert_file_link').attr('href', alert_file_link);
         $('#news_file_link').attr('href', news_file_link);
         $('#duedates_file_link').attr('href', duedates_file_link);
+
 
         source = "\\\\vsl-file01\\coursesdev$\\courses\\2020\\" + course + "\\" + year + "\\resources.html";
         alertFile = "\\\\vsl-file01\\coursesdev$\\courses\\2020\\" + course + "\\" + year + "\\alert.html";
@@ -73,18 +76,23 @@ $(document).ready(function() {
         //if course and year selected, enable view buttons
         if (course && year) {
             // $('#resource_file_link, #alert_file_link, #news_file_link, #duedates_file_link').show();
-            $('#view_files').fadeIn();
+            $('.dropdown2').fadeIn();
         }
 
         //read file content
-        data_resource = fs.readFileSync(source, 'utf8');
+        //data_resource = fs.readFileSync(source, 'utf8');
+        data_resource = fileRead(source);
         data_resource = pretty(data_resource, { ocd: true })
-        data_alert = fs.readFileSync(alertFile, 'utf8');
+            //data_alert = fs.readFileSync(alertFile, 'utf8');
+        data_alert = fileRead(alertFile);
         data_alert = pretty(data_alert, { ocd: true });
-        data_news = fs.readFileSync(newsFile, 'utf8');
+        // data_news = fs.readFileSync(newsFile, 'utf8');
+        data_news = fileRead(newsFile);
         data_news = pretty(data_news, { ocd: true });
-        data_duedates = fs.readFileSync(duedatesFile, 'utf8');
-        data_manifest = fs.readFileSync(manifestFile, 'utf-8')
+        //data_duedates = fs.readFileSync(duedatesFile, 'utf8');
+        data_duedates = fileRead(duedatesFile);
+        //data_manifest = fs.readFileSync(manifestFile, 'utf-8')
+        data_manifest = fileRead(manifestFile);
 
         cheer = cheerio.load(data_resource);
         cheer2 = cheerio.load(data_alert);
@@ -374,6 +382,7 @@ $(document).ready(function() {
                 }
                 displayOptions();
                 break;
+
             case "Comment Out":
 
                 thisElement.parent('li').wrap(function() {
@@ -424,15 +433,33 @@ $(document).ready(function() {
 
     //Save html
     $("#submit").click(function() {
+        var allFiles = [],
+            allFilesNames = '';
+        if ($('#updateResourceFile input').prop("checked") == true) {
+            allFiles.push("resources.html")
+        }
+        if ($('#updateAlertFile input').prop("checked") == true) {
+            allFiles.push("alert.html")
+        }
+        if ($('#updateNewsFile input').prop("checked") == true) {
+            allFiles.push("news.html")
+        }
+        if ($('#updateDuedatesFile input').prop("checked") == true) {
+            allFiles.push("duedates.html")
+        }
+        allFiles.forEach(function(file) {
+            allFilesNames += "\n" + file;
+        })
 
+        console.log(allFilesNames)
 
         if (course && year) {
 
-            if (confirm("Update " + course + "/" + year + " ?")) {
+            if (confirm("Update " + course + "/" + year + " " + allFilesNames + " ?")) {
 
 
                 // $("#status").show();
-                $("#status").html("File Updated")
+                $("#status").html("Updated " + course + " " + year)
                 displayMessage()
                 $('#selectTask').prop("selected", true);
                 //displayMessage()
@@ -570,6 +597,24 @@ $(document).ready(function() {
             displayMessage();
         }
     });
+
+    function fileRead(file) {
+        let fileContents
+        try {
+            fileContents = fs.readFileSync(file, 'utf-8');
+        } catch (err) {
+            if (err.code === 'ENOENT') {
+                console.log('File not found!');
+                fileContents = `<div style=" text-align: center !important;
+                color: black !important;
+                font-size: 30px !important;
+                font-weight: 600 !important;">${err}</div>`
+            } else {
+                throw err;
+            }
+        }
+        return fileContents
+    }
 
     function displayMessage() {
         $("#status").show();
