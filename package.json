@@ -1,6 +1,6 @@
 {
     "name": "update_courses",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "description": "update course files",
     "main": "main.js",
     "scripts": {
@@ -26,28 +26,16 @@
         "electron-prebuilt": "^1.4.13"
     },
     "dependencies": {
-        "bootstrap-markdown-editor-4": "^3.0.0",
         "cheerio": "^1.0.0-rc.3",
-        "copy": "^0.3.2",
-        "copyfiles": "^2.3.0",
-        "cpx": "^1.5.0",
         "date-and-time": "^0.13.1",
-        "easymde": "^2.11.0",
         "electron-build": "0.0.3",
-        "electron-updater": "^4.3.4",
-        "file-uri-to-path": "^2.0.0",
-        "fs-copy-file": "^2.1.2",
-        "highlightjs": "^9.16.2",
         "jquery": "^3.5.1",
         "jquery-ui": "^1.12.1",
         "jquery-ui-dist": "^1.12.1",
         "marked": "^1.1.1",
+        "mv": "^2.1.1",
         "open": "^7.0.4",
         "pretty": "^2.0.0",
-        "quill": "^1.3.7",
-        "recursive-copy": "^2.0.10",
-        "remote": "^0.2.6",
-        "sortablejs": "^1.10.2",
-        "update-electron-app": "^1.5.0"
+        "recursive-copy": "^2.0.10"
     }
 }

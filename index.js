@@ -7,9 +7,10 @@ var cheerio = require('cheerio');
 const { shell, clipboard } = require('electron');
 var pretty = require('pretty');
 var copy = require('recursive-copy');
-const copyFile = require('fs-copy-file');
 const date = require('date-and-time');
 const marked = require('marked');
+var mv = require('mv');
+
 
 $(document).ready(function() {
 
@@ -28,7 +29,8 @@ $(document).ready(function() {
         filesToDelete = [];
 
     var courseName, cheer, cheer2, cheer3, cheer4, data_resource, newData_resource, data_alert, newData_alert, data_news, newData_news, data_duedates, newData_duedates, content, content_alert,
-        content_news, content_duedates, content_manifest, html, _text, taskSelected, thisElement, fileDisplayName, filePath, fileToDelete, oldFileName, originalName,
+        content_news, content_duedates, content_manifest, html, _text, taskSelected, thisElement, fileDisplayName, filePath, fileToDelete, oldFileName, originalName, yearCalender, MOVE_FROM = [],
+        MOVE_TO = [],
         editorNews, editorAlert, toolbarOptions = "",
         options = "",
         pathForFile;
@@ -39,6 +41,7 @@ $(document).ready(function() {
 
     //find source path
     $("#wrapper-inner").change(function() {
+        yearCalender = $('#yearCalender').find("input[type=radio]:checked").siblings('label').text();
         course = $('#courses').find("input[type=radio]:checked").siblings('label').text();
         year = $('#year').find("input[type=radio]:checked").siblings('label').text();
 
@@ -50,10 +53,10 @@ $(document).ready(function() {
         $('<div id="newsFile"></div>').appendTo('#newsSection');
 
         //set attr
-        var resource_file_link = "https://courses.languages.vic.edu.au/2020/" + course + "/" + year + "/resources.html";
-        var alert_file_link = "https://courses.languages.vic.edu.au/2020/" + course + "/" + year + "/alert.html";
-        var news_file_link = "https://courses.languages.vic.edu.au/2020/" + course + "/" + year + "/news.html";
-        var duedates_file_link = "https://courses.languages.vic.edu.au/2020/" + course + "/" + year + "/duedates.html";
+        var resource_file_link = "https://courses.languages.vic.edu.au/" + yearCalender + "/" + course + "/" + year + "/resources.html";
+        var alert_file_link = "https://courses.languages.vic.edu.au/" + yearCalender + "/" + course + "/" + year + "/alert.html";
+        var news_file_link = "https://courses.languages.vic.edu.au/" + yearCalender + "/" + course + "/" + year + "/news.html";
+        var duedates_file_link = "https://courses.languages.vic.edu.au/" + yearCalender + "/" + course + "/" + year + "/duedates.html";
 
         //activate live button links
         $('#resource_file_link').attr('href', resource_file_link);
@@ -62,11 +65,11 @@ $(document).ready(function() {
         $('#duedates_file_link').attr('href', duedates_file_link);
 
 
-        source = "\\\\vsl-file01\\coursesdev$\\courses\\2020\\" + course + "\\" + year + "\\resources.html";
-        alertFile = "\\\\vsl-file01\\coursesdev$\\courses\\2020\\" + course + "\\" + year + "\\alert.html";
-        newsFile = "\\\\vsl-file01\\coursesdev$\\courses\\2020\\" + course + "\\" + year + "\\news.html";
-        duedatesFile = "\\\\vsl-file01\\coursesdev$\\courses\\2020\\" + course + "\\" + year + "\\duedates.html";
-        manifestFile = "\\\\vsl-file01\\coursesdev$\\courses\\2020\\" + course + "\\" + year + "\\manifest.xml";
+        source = "\\\\vsl-file01\\coursesdev$\\courses\\" + yearCalender + "\\" + course + "\\" + year + "\\resources.html";
+        alertFile = "\\\\vsl-file01\\coursesdev$\\courses\\" + yearCalender + "\\" + course + "\\" + year + "\\alert.html";
+        newsFile = "\\\\vsl-file01\\coursesdev$\\courses\\" + yearCalender + "\\" + course + "\\" + year + "\\news.html";
+        duedatesFile = "\\\\vsl-file01\\coursesdev$\\courses\\" + yearCalender + "\\" + course + "\\" + year + "\\duedates.html";
+        manifestFile = "\\\\vsl-file01\\coursesdev$\\courses\\" + yearCalender + "\\" + course + "\\" + year + "\\manifest.xml";
 
         //source = path.join(require('os').homedir(), 'Desktop/resources.html');
         //source2 = path.join(require('os').homedir(), 'Desktop/resources2.html');
@@ -242,9 +245,9 @@ $(document).ready(function() {
                     fileDisplayName = originalName;
                     oldFileName = path.basename(thisElement.attr('href'));
                     if (path.extname(thisElement.attr('href')) == ".mp4") {
-                        fileToDelete = "\\\\vsl-file01\\coursesdev$\\courses\\2020\\" + course + "\\" + year + "\\resources\\video\\" + oldFileName;
+                        fileToDelete = "\\\\vsl-file01\\coursesdev$\\courses\\" + yearCalender + "\\" + course + "\\" + year + "\\resources\\video\\" + oldFileName;
                     } else {
-                        fileToDelete = "\\\\vsl-file01\\coursesdev$\\courses\\2020\\" + course + "\\" + year + "\\resources\\" + oldFileName;
+                        fileToDelete = "\\\\vsl-file01\\coursesdev$\\courses\\" + yearCalender + "\\" + course + "\\" + year + "\\resources\\" + oldFileName;
                     }
                     console.log(fileToDelete)
                 }
@@ -291,7 +294,7 @@ $(document).ready(function() {
                     if (thisElement.attr('href')) {
 
                         oldFileName = path.basename(thisElement.attr('href'));
-                        // fileToDelete = "\\\\vsl-file01\\coursesdev$\\courses\\2020\\" + course + "\\" + year + "\\resources\\" + oldFileName;
+                        // fileToDelete = "\\\\vsl-file01\\coursesdev$\\courses\\" + yearCalender + "\\" + course + "\\" + year + "\\resources\\" + oldFileName;
                         //fileToDelete = path.join(require('os').homedir(), "/Desktop/resources/" + oldFileName);
                         thisElement.parent().remove();
                         if ($('#keepOldFile input').prop("checked") == false) { filesToDelete.push(fileToDelete) }
@@ -538,24 +541,35 @@ $(document).ready(function() {
                     for (var i = 0; i < filesToAdd.length; i++) {
                         console.log(filesToAdd[i])
                         console.log(newPath[i])
-
+                        MOVE_FROM.push(filesToAdd[i])
+                        MOVE_TO.push("\\\\vsl-file01\\coursesdev$\\courses\\" + yearCalender + "\\CB4(uploaded)\\" + path.basename(filesToAdd[i]))
                         copy(filesToAdd[i], newPath[i], function(err) {
                             if (!err) {
+                                console.log(MOVE_FROM)
+                                console.log(MOVE_TO)
                                 displayMessage();
                             }
                         })
+
                     }
+
                 }
+
 
                 if (filesToDelete != null) {
                     filesToDelete.forEach(function(file) {
                         fs.unlink(file, function(err) {
                             if (!err) {
                                 displayMessage();
+
                             }
                         })
                     })
                 }
+                setTimeout(() => {
+                    moveToUploaded(MOVE_FROM, MOVE_TO)
+
+                }, 500);
 
                 console.log(totalFiles)
                     //update manifest file
@@ -573,21 +587,22 @@ $(document).ready(function() {
                 console.log(newData_manifest);
 
                 //reset filepath
-                options = "";
-                filePath = '';
-                filesToDelete = [];
-                filesToAdd = [];
-                newPath = [];
-                totalFiles = [];
-                fileDisplayName = '';
-                fileExtension = '';
-                // $('#fileDisplayName').val(fileDisplayName);
-                // $('#fileExtName').val(fileExtension);
-                $('#fileDisplayName').val("");
-
-                $('#cloud').show();
-                $('#fileExtName').val("");
-                $('#fileDisplayName').focus();
+                setTimeout(() => {
+                    options = "";
+                    filePath = '';
+                    filesToDelete = [];
+                    filesToAdd = [];
+                    newPath = [];
+                    totalFiles = [];
+                    fileDisplayName = '';
+                    fileExtension = '';
+                    MOVE_FROM = [];
+                    MOVE_TO = [];
+                    $('#fileDisplayName').val("");
+                    $('#cloud').show();
+                    $('#fileExtName').val("");
+                    $('#fileDisplayName').focus();
+                }, 1000);
 
             }
 
@@ -641,16 +656,31 @@ $(document).ready(function() {
         $('#fileExtName').val("(" + fileExtension + ")");
         fileDisplayName = $('#fileDisplayName').val();
         // filesToAdd.push(filePath)
-        //newPath.push("\\\\vsl-file01\\coursesdev$\\courses\\2020\\" + course + "\\" + year + "\\resources\\" + filename);
+        //newPath.push("\\\\vsl-file01\\coursesdev$\\courses\\" + yearCalender + "\\" + course + "\\" + year + "\\resources\\" + filename);
         //newPath = path.join(require('os').homedir(), "/Desktop/resources/" + filename);
         if (fileExtension == "mp4") {
-            pathForFile = "\\\\vsl-file01\\coursesdev$\\courses\\2020\\" + course + "\\" + year + "\\resources\\video\\" + filename;
-            fullLink = "https://courses.languages.vic.edu.au/2020/" + course + "/" + year + "/resources/video/" + filename;
+            pathForFile = "\\\\vsl-file01\\coursesdev$\\courses\\" + yearCalender + "\\" + course + "\\" + year + "\\resources\\video\\" + filename;
+            fullLink = "https://courses.languages.vic.edu.au/" + yearCalender + "/" + course + "/" + year + "/resources/video/" + filename;
         } else {
-            pathForFile = "\\\\vsl-file01\\coursesdev$\\courses\\2020\\" + course + "\\" + year + "\\resources\\" + filename;
-            fullLink = "https://courses.languages.vic.edu.au/2020/" + course + "/" + year + "/resources/" + filename;
+            pathForFile = "\\\\vsl-file01\\coursesdev$\\courses\\" + yearCalender + "\\" + course + "\\" + year + "\\resources\\" + filename;
+            fullLink = "https://courses.languages.vic.edu.au/" + yearCalender + "/" + course + "/" + year + "/resources/" + filename;
         }
     }
+
+    function moveToUploaded(src, dest) {
+        if ($('#moveToUpload input').prop("checked") == true) {
+
+            for (var i = 0; i < src.length; i++) {
+                mv(src[i], dest[i], function(err) {
+                    if (!err) {
+                        console.log("file moved to " + dest[i])
+                    }
+                });
+            }
+            src = [], dest = []
+        }
+    }
+
     //clear app
     $('#clear').click(function() {
         location.reload();
