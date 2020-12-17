@@ -14,7 +14,7 @@ var mv = require('mv');
 
 $(document).ready(function() {
 
-    $('#tasks').hide();
+    $('#tasks,#spin,#status').hide();
     $('.dropdown2').hide();
 
     //open links in default browser
@@ -23,24 +23,25 @@ $(document).ready(function() {
         shell.openExternal(this.href);
     });
 
-    var source, alertFile, newsFile, duedatesFile, year, course, element, files, filename, fileExtension, manifestFile, data_manifest, newData_manifest, todayDate, newPath = [],
+    var source, alertFile, newsFile, year, course, element, files, filename, fileExtension, manifestFile, data_manifest, newData_manifest, todayDate, newPath = [],
         totalFiles = [],
         filesToAdd = [],
         filesToDelete = [];
 
-    var courseName, cheer, cheer2, cheer3, cheer4, data_resource, newData_resource, data_alert, newData_alert, data_news, newData_news, data_duedates, newData_duedates, content, content_alert,
-        content_news, content_duedates, content_manifest, html, _text, taskSelected, thisElement, fileDisplayName, filePath, fileToDelete, oldFileName, originalName, yearCalender, MOVE_FROM = [],
+    var courseName, cheer, cheer2, cheer3, cheer4, data_resource, newData_resource, data_alert, newData_alert, data_news, newData_news, content, content_alert,
+        content_news, content_manifest, html, taskSelected, thisElement, fileDisplayName, filePath, fileToDelete, oldFileName, originalName, originalExt, yearCalender, MOVE_FROM = [],
         MOVE_TO = [],
         editorNews, editorAlert, toolbarOptions = "",
+        img1, img2, img1css,
         options = "",
         pathForFile;
     // alert(todayDate);
-    $("#status").hide();
     //$('#resource_file_link, #alert_file_link, #news_file_link, #duedates_file_link').hide();
 
 
     //find source path
     $("#wrapper-inner").change(function() {
+
         yearCalender = $('#yearCalender').find("input[type=radio]:checked").siblings('label').text();
         course = $('#courses').find("input[type=radio]:checked").siblings('label').text();
         year = $('#year').find("input[type=radio]:checked").siblings('label').text();
@@ -56,19 +57,16 @@ $(document).ready(function() {
         var resource_file_link = "https://courses.languages.vic.edu.au/" + yearCalender + "/" + course + "/" + year + "/resources.html";
         var alert_file_link = "https://courses.languages.vic.edu.au/" + yearCalender + "/" + course + "/" + year + "/alert.html";
         var news_file_link = "https://courses.languages.vic.edu.au/" + yearCalender + "/" + course + "/" + year + "/news.html";
-        var duedates_file_link = "https://courses.languages.vic.edu.au/" + yearCalender + "/" + course + "/" + year + "/duedates.html";
 
         //activate live button links
         $('#resource_file_link').attr('href', resource_file_link);
         $('#alert_file_link').attr('href', alert_file_link);
         $('#news_file_link').attr('href', news_file_link);
-        $('#duedates_file_link').attr('href', duedates_file_link);
 
 
         source = "\\\\vsl-file01\\coursesdev$\\courses\\" + yearCalender + "\\" + course + "\\" + year + "\\resources.html";
         alertFile = "\\\\vsl-file01\\coursesdev$\\courses\\" + yearCalender + "\\" + course + "\\" + year + "\\alert.html";
         newsFile = "\\\\vsl-file01\\coursesdev$\\courses\\" + yearCalender + "\\" + course + "\\" + year + "\\news.html";
-        duedatesFile = "\\\\vsl-file01\\coursesdev$\\courses\\" + yearCalender + "\\" + course + "\\" + year + "\\duedates.html";
         manifestFile = "\\\\vsl-file01\\coursesdev$\\courses\\" + yearCalender + "\\" + course + "\\" + year + "\\manifest.xml";
 
         //source = path.join(require('os').homedir(), 'Desktop/resources.html');
@@ -92,28 +90,32 @@ $(document).ready(function() {
         // data_news = fs.readFileSync(newsFile, 'utf8');
         data_news = fileRead(newsFile);
         data_news = pretty(data_news, { ocd: true });
-        //data_duedates = fs.readFileSync(duedatesFile, 'utf8');
-        data_duedates = fileRead(duedatesFile);
         //data_manifest = fs.readFileSync(manifestFile, 'utf-8')
         data_manifest = fileRead(manifestFile);
 
         cheer = cheerio.load(data_resource);
         cheer2 = cheerio.load(data_alert);
         cheer3 = cheerio.load(data_news);
-        cheer4 = cheerio.load(data_duedates);
         cheerM = cheerio.load(data_manifest, { xmlMode: true });
 
         //load file content
         $("#link").html(data_resource);
         $("#alertFile").html(data_alert);
         $("#newsFile").html(data_news);
-        $("#duedatesFile").html(data_duedates);
 
+        //get image paths for local web server
+        img1 = cheer3('img').first().attr('src')
+        img2 = cheer3('img').last().attr('src')
+        if (cheer3('img').first().attr('style')) {
+            img1css = cheer3('img').first().attr('style')
+        } else {
+            img1css = "";
+        }
+        console.log(img1css)
 
         console.log(data_resource);
         console.log(data_alert);
         console.log(data_news);
-        console.log(data_duedates);
         console.log(data_manifest);
 
         var Bold = Quill.import('formats/bold');
@@ -128,12 +130,14 @@ $(document).ready(function() {
             ["bold", "italic", "underline", "strike"],
             [{ 'color': ['red', 'blue', 'yellow', 'green', 'black'] }, { 'background': ['red', 'blue', 'yellow', 'green', 'black'] }],
             [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-            ["image", "code-block", "link"],
+            ['link', 'image', 'video', 'formula']
         ]
         options = {
             modules: {
                 toolbar: toolbarOptions,
-
+                clipboard: {
+                    matchVisual: false
+                }
             },
             theme: 'snow'
         };
@@ -151,20 +155,15 @@ $(document).ready(function() {
         });
         $(".res_col ul").disableSelection();
 
-        $(".box tbody").sortable({
-            connectWith: ".box tbody"
-        });
-        $(".box tbody").disableSelection();
 
         //choose file
         $('#chooseFile').on('click', function() {
+
             ipc.send('selectFile-dialog')
         })
         ipc.on('selectFile-selected', function(event, file) {
-            if (!file) {
-                $('#status').html("No File selected");
-                displayMessage()
-            } else {
+
+            if (file) {
                 filePath = file;
                 console.log(filePath)
                 processPath();
@@ -209,15 +208,13 @@ $(document).ready(function() {
         });
 
 
-
-
     }); //end change function
 
     //paste option
     $('#fileDisplayName').bind("contextmenu", function(event) {
         event.preventDefault();
         $('#paste').css({
-            "top": (event.pageY - 100) + "px",
+            "top": (event.pageY - 80) + "px",
             "left": event.pageX + "px"
         }).show();
     });
@@ -228,20 +225,23 @@ $(document).ready(function() {
 
     })
 
-    $('#link,#duedatesFile').bind("contextmenu", function(event) {
+    $('#link').bind("contextmenu", function(event) {
 
         if (event.target) {
-            if (event.target.tagName == 'A' || event.target.tagName == 'B') {
+            if (event.target.tagName == 'A' || event.target.tagName == 'B' || event.target.tagName == 'I') {
                 if (event.target.tagName == 'A') {
                     thisElement = $(event.target);
                 }
-                if (event.target.tagName == 'B') {
+                if (event.target.tagName == 'B' || event.target.tagName == 'I') {
                     thisElement = $(event.target).parent();
                 }
                 if (thisElement.attr('href')) {
                     originalName = thisElement.html();
+                    originalExt = path.extname(path.basename(thisElement.attr('href')));
+                    originalExt = "(" + originalExt.slice(1) + ")";
                     console.log(originalName);
-                    //fileDisplayName = $('#fileDisplayName').val();
+                    console.log(originalExt)
+                        //fileDisplayName = $('#fileDisplayName').val();
                     fileDisplayName = originalName;
                     oldFileName = path.basename(thisElement.attr('href'));
                     if (path.extname(thisElement.attr('href')) == ".mp4") {
@@ -252,7 +252,7 @@ $(document).ready(function() {
                     console.log(fileToDelete)
                 }
             }
-            if (event.target.tagName.startsWith('H') || event.target.tagName == 'P' || event.target.tagName.startsWith('T')) {
+            if (event.target.tagName.startsWith('H') || event.target.tagName == 'P') {
                 thisElement = $(event.target);
                 console.log(thisElement.text());
             }
@@ -300,11 +300,7 @@ $(document).ready(function() {
                         if ($('#keepOldFile input').prop("checked") == false) { filesToDelete.push(fileToDelete) }
 
                     } else {
-                        if (thisElement.is("td")) {
-                            thisElement.parent().remove();
-                        } else {
-                            thisElement.remove();
-                        }
+                        thisElement.remove();
                     }
                 }
                 break;
@@ -323,11 +319,7 @@ $(document).ready(function() {
                 if (thisElement.attr('href')) {
                     thisElement.parent().before(element + "\n");
                 } else {
-                    if (thisElement.is("td")) {
-                        thisElement.parent().before("<tr><td>workset no</td><td>task</td><td>Date</td></tr>\n");
-                    } else {
-                        thisElement.before(element + "\n");
-                    }
+                    thisElement.before(element + "\n");
                 }
                 displayOptions();
                 break;
@@ -346,30 +338,29 @@ $(document).ready(function() {
                 if (thisElement.attr('href')) {
                     thisElement.parent('li').after("\n" + element);
 
+
                 } else {
-                    if (thisElement.is("td")) {
-                        thisElement.parent().after("\n<tr><td>workset no</td><td>task</td><td>Date</td></tr>");
-                    } else {
-                        thisElement.after("\n" + element);
-                    }
+                    thisElement.after("\n" + element);
                 }
                 displayOptions();
                 break;
 
             case "Edit":
-
                 if (fileDisplayName == "") {
                     fileDisplayName = originalName;
                 }
-                fileExtension = $('#fileExtName').val();
+
 
                 if (filePath) {
 
                     oldFileName = path.basename(thisElement.attr('href'));
                     //fileToDelete = path.join(require('os').homedir(), "/Desktop/resources/" + oldFileName);
-                    element = `<a href="${fullLink}">${fileDisplayName}</a>`;
+                    element = `<li><a href="${fullLink}">${fileDisplayName}</a>${fileExtension}</li>`;
                     console.log(element)
-                    thisElement.replaceWith(element).append(fileExtension);
+                    thisElement.effect("shake", { times: 4, distance: 10 }, 800);
+                    setTimeout(() => {
+                        thisElement.parent('li').replaceWith(element)
+                    }, 300);
                     filesToAdd.push(filePath)
                     newPath.push(pathForFile);
                     //newPath.push(path.join(require('os').homedir(), "/Desktop/resources/" + filename));
@@ -381,17 +372,35 @@ $(document).ready(function() {
                         thisElement.parent('li').replaceWith(element);
                     } else {
                         thisElement.text(fileDisplayName);
+
                     }
                 }
+
                 displayOptions();
                 break;
 
             case "Comment Out":
 
-                thisElement.parent('li').wrap(function() {
-                    return "<!--<li>" + $(this).html() + "</li>-->";
-                });
-                $("#status").html("File Commented Out");
+                if (thisElement.attr('href')) {
+                    thisElement.parent('li').wrap(function() {
+                        console.log("<!--<li>" + $(this).html() + "</li>-->")
+                        return "<!--<li>" + $(this).html() + "</li>-->";
+                    });
+                } else {
+                    let el2 = "<!--" + thisElement.removeAttr('class').get(0).outerHTML + "-->"
+                    console.log(thisElement.removeAttr('class').get(0).outerHTML)
+                    console.log(el2)
+                    thisElement.replaceWith(el2)
+                }
+                // $("#status").html("File Commented Out");
+                break;
+
+            case "Uncomment Files":
+                let content = $("#link").html();
+                content = content.replace(/<!--/g, '').replace(/-->/g, '')
+                $("#link").html(content);
+                console.log($("#link").html())
+                console.log("uncommented")
                 break;
 
             case "Copy Text":
@@ -416,15 +425,14 @@ $(document).ready(function() {
                 console.log(html)
                 break;
 
+
+
             case "Make New Column":
 
                 $('.res_col:last').after(`<div class="res_col"><ul><h5>New Column</h5><li><a href="https://www.vsl.vic.edu.au/">Edit me</a></li></ul></div>`)
 
                 break;
 
-            case "Add Here":
-                thisElement.text(fileDisplayName);
-                break;
         }
 
 
@@ -447,9 +455,7 @@ $(document).ready(function() {
         if ($('#updateNewsFile input').prop("checked") == true) {
             allFiles.push("news.html")
         }
-        if ($('#updateDuedatesFile input').prop("checked") == true) {
-            allFiles.push("duedates.html")
-        }
+
         allFiles.forEach(function(file) {
             allFilesNames += "\n" + file;
         })
@@ -460,18 +466,16 @@ $(document).ready(function() {
 
             if (confirm("Update " + course + "/" + year + " " + allFilesNames + " ?")) {
 
+                $("#spin").show();
+                // $("#status").html("Updated " + course + " " + year)
 
-                // $("#status").show();
-                $("#status").html("Updated " + course + " " + year)
-                displayMessage()
                 $('#selectTask').prop("selected", true);
                 //displayMessage()
                 console.log(filesToAdd);
                 console.log(filesToDelete);
 
                 if ($('#updateResourceFile input').prop("checked") == true) {
-                    totalFiles.push("resources.html")
-                        //remove empty columns
+                    //remove empty columns
                     $('.res_col').each(function() {
                         if ($.trim($(this).children().children().text()) == "") {
                             $(this).remove();
@@ -488,13 +492,11 @@ $(document).ready(function() {
                     newData_resource = fs.writeFileSync(source, content, 'utf8')
                     $("#link").html(newData_resource);
 
-
                 } //end updating resource file
 
 
 
                 if ($('#updateAlertFile input').prop("checked") == true) {
-                    totalFiles.push("alert.html")
                     content_alert = editorAlert.root.innerHTML
                     content_alert = content_alert.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/<p><br[\/]?><[\/]?p>/g, '');
                     content_alert = pretty(content_alert, { ocd: true });
@@ -504,73 +506,59 @@ $(document).ready(function() {
                 }
 
                 if ($('#updateNewsFile input').prop("checked") == true) {
-                    cheer3 = cheerio.load(editorNews.root.innerHTML);
-                    var head = `<link rel="stylesheet" href="css/news.css">
-                                <style>
-                                /* Put local styles here */
-                                </style>`;
-                    cheer3('head').html(head);
-
-                    cheer3("body").children().filter(function() {
-                        return $(this).text().trim() == "";
-                    }).remove();
-                    content_news = cheer3.html();
-                    console.log(content_news)
-                    content_news = content_news.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#xA0;/g, '').replace(/<p><br[\/]?><[\/]?p>/g, '');
+                    let N = cheerio.load(editorNews.root.innerHTML)
+                    N('img').first().attr({ "src": img1, "style": img1css })
+                    N('img').last().attr('src', img2)
+                    content_news = N('body').html()
+                        //content_news = editorNews.root.innerHTML;
+                    content_news = content_news.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#xA0;/g, '').replace(/&apos;/g, "'");
                     content_news = pretty(content_news, { ocd: true });
                     newData_news = fs.writeFileSync(newsFile, content_news, 'utf8');
                     $("#newsFile").html(newData_news);
                     console.log(newData_news);
                 }
 
-                if ($('#updateDuedatesFile input').prop("checked") == true) {
-                    totalFiles.push("duedates.html")
-                    cheer4 = cheerio.load($('#duedatesFile').html());
-                    cheer4('.box').find('*').removeAttr('class');
-                    content_duedates = cheer4.html();
-                    content_duedates = content_duedates.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"');
-                    content_duedates = pretty(content_duedates, { ocd: true });
-                    newData_duedates = fs.writeFileSync(duedatesFile, content_duedates, 'utf8');
-                    $("#duedatesFile").html(newData_duedates);
-                    console.log(newData_duedates);
+                //copy and delete file
+                if (filesToDelete != null) {
+                    filesToDelete.forEach(function(file) {
+                        fs.unlink(file, function(err) {
+                            if (!err) {
+                                console.log("file deleted");
+
+                            }
+                        })
+                    })
                 }
 
-                //copy and delete file
                 if (filesToAdd != null) {
 
                     for (var i = 0; i < filesToAdd.length; i++) {
                         console.log(filesToAdd[i])
                         console.log(newPath[i])
                         MOVE_FROM.push(filesToAdd[i])
-                        MOVE_TO.push("\\\\vsl-file01\\coursesdev$\\courses\\" + yearCalender + "\\CB4(uploaded)\\" + path.basename(filesToAdd[i]))
+                        var uploaded = filesToAdd[i].split("\\")
+                        uploaded.pop()
+                        uploaded = uploaded.join("\\")
+                        console.log(uploaded)
+                        uploaded = uploaded + "\\uploaded\\" + path.basename(filesToAdd[i]);
+                        console.log(uploaded)
+                        MOVE_TO.push(uploaded)
                         copy(filesToAdd[i], newPath[i], function(err) {
                             if (!err) {
                                 console.log(MOVE_FROM)
                                 console.log(MOVE_TO)
-                                displayMessage();
+                                console.log("file added")
                             }
                         })
 
                     }
 
                 }
-
-
-                if (filesToDelete != null) {
-                    filesToDelete.forEach(function(file) {
-                        fs.unlink(file, function(err) {
-                            if (!err) {
-                                displayMessage();
-
-                            }
-                        })
-                    })
-                }
                 setTimeout(() => {
                     moveToUploaded(MOVE_FROM, MOVE_TO)
-
                 }, 500);
 
+                /*
                 console.log(totalFiles)
                     //update manifest file
                 todayDate = date.format(new Date(), 'YYYYMMDDHHmmss');
@@ -585,9 +573,12 @@ $(document).ready(function() {
                 content_manifest = cheerM.html();
                 newData_manifest = fs.writeFileSync(manifestFile, content_manifest, 'utf8')
                 console.log(newData_manifest);
+                */
 
                 //reset filepath
                 setTimeout(() => {
+                    displayMessage("Updated " + course + " " + year, 4000);
+
                     options = "";
                     filePath = '';
                     filesToDelete = [];
@@ -602,14 +593,13 @@ $(document).ready(function() {
                     $('#cloud').show();
                     $('#fileExtName').val("");
                     $('#fileDisplayName').focus();
-                }, 1000);
+                }, 1500);
 
             }
 
         } else {
 
-            $('#status').html("Select Course!");
-            displayMessage();
+            displayMessage("Select Course!", 1000);
         }
     });
 
@@ -631,11 +621,12 @@ $(document).ready(function() {
         return fileContents
     }
 
-    function displayMessage() {
-        $("#status").show();
+    function displayMessage(msg, duration) {
+        $('#spin').hide();
+        $("#status").html(msg).show();
         setTimeout(function() {
             $("#status").fadeOut(500);
-        }, 3000);
+        }, duration);
     }
 
     function displayOptions() {

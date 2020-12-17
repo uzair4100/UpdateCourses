@@ -4,17 +4,17 @@ const path = require('path');
 const dialog = electron.dialog;
 const ipc = electron.ipcMain;
 const { app, BrowserWindow } = electron;
-var mainWindow;
 const { shell } = require('electron')
-    // 8e2565abef29d2adcab55689d4408fad7664ddf6
+var window;
+// 8e2565abef29d2adcab55689d4408fad7664ddf6
 
 app.on('ready', function() {
     //create new window
     mainWindow = new BrowserWindow({
-        //  minWidth: 1320,
+        minWidth: 1320,
         width: 1320,
-        // minHeight: 1050,
-        height: 925,
+        minHeight: 985,
+        height: 985,
         webPreferences: {
             nodeIntegration: true
         }
@@ -33,17 +33,15 @@ app.on('ready', function() {
 ipc.on('selectFile-dialog', function(event) {
 
     var window = BrowserWindow.fromWebContents(event.sender);
-
     var selectFileOptions = {
         title: 'Choose File to Upload',
-        buttonLabel: 'OK',
+        buttonLabel: 'Add',
         properties: [
             'openFile'
         ]
     };
 
     dialog.showOpenDialog(window, selectFileOptions, function(file, err) {
-
         if (file) {
             event.sender.send('selectFile-selected', file[0]);
             console.log(file);

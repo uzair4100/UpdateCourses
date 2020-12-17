@@ -1,6 +1,6 @@
 {
-    "name": "update_courses",
-    "version": "2.0.0",
+    "name": "update_courses_2021",
+    "version": "2.0.1",
     "description": "update course files",
     "main": "main.js",
     "scripts": {
@@ -10,7 +10,7 @@
         "dist": "electron-builder"
     },
     "build": {
-        "appId": "com.resource.quickstart",
+        "appId": "com.resource2021.quickstart",
         "win": {
             "target": "nsis"
         },
@@ -36,6 +36,7 @@
         "mv": "^2.1.1",
         "open": "^7.0.4",
         "pretty": "^2.0.0",
-        "recursive-copy": "^2.0.10"
+        "recursive-copy": "^2.0.10",
+        "uncomment-it": "^1.0.1"
     }
 }

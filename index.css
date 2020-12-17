@@ -1,43 +1,27 @@
                 body {
-                    background: #f5f5f7 !important;
+                    background: #f5f5f5 !important;
+                    margin: 0 !important;
                 }
                 
-                @media (min-width: 1000px) {
-                    .container {
-                        min-width: 1300px;
-                    }
+                .u {
+                    text-decoration: underline !important;
                 }
                 
                 #paths {
                     display: flex;
-                    justify-content: space-around;
+                    justify-content: space-between;
                     margin-top: 5px;
-                }
-                
-                #paste {
-                    display: none;
-                    width: 10%;
-                    position: absolute;
-                    box-shadow: 3px 3px 10px rgba(0, 0, 0, .5);
-                    background: #fff;
-                    list-style-type: none;
-                    padding: 0;
-                    border-radius: 10px;
                 }
                 
                 #selectOptions {
                     width: auto;
                 }
                 
+                #spin,
                 #status {
-                    background: tomato;
-                    width: 25%;
-                    text-align: center;
-                    border-radius: 7px;
                     color: #fff;
                     font-size: 30px;
                     font-weight: 600;
-                    padding: 7px;
                 }
                 
                 .fileError {
@@ -76,9 +60,10 @@
                     font-weight: 600;
                     height: 80px;
                     overflow: hidden;
+                    position: relative;
                 }
                 
-                label {
+                .customLabel {
                     font-size: 16px;
                     font-weight: 700;
                     color: teal;
@@ -88,13 +73,19 @@
                     background: whitesmoke !important;
                 }
                 
-                #link,
-                #duedatesFile {
+                .ql-formats .ql-active {
+                    background: lightsteelblue !important;
+                    color: #fff !important;
+                    margin: 2px !important;
+                    border-radius: 5px;
+                }
+                
+                #link {
                     padding: 10px 5px;
                     background: #fff;
-                    border: 5px solid #ccc;
+                    border: 3px solid #ccc;
                     border-radius: 5px;
-                    height: 450px;
+                    height: 500px;
                     overflow-x: auto;
                     overflow-y: auto;
                     width: 100%;
@@ -104,9 +95,9 @@
                 #newsFile {
                     padding: 10px 5px;
                     background: #fff;
-                    border: 5px solid #ccc;
-                    border-radius: 5px;
-                    height: 405px;
+                    border: 3px solid #ccc;
+                    border-top: none;
+                    height: 455px;
                     overflow-x: auto;
                     overflow-y: auto;
                     width: 100%;
@@ -119,31 +110,33 @@
                 }
                 
                 .dropdown-content {
+                    border-radius: 9px;
                     display: none;
                     position: absolute;
-                    background-color: #f1f1f1;
                     min-width: 160px;
                     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
                     z-index: 1;
+                    right: 3px;
                 }
                 
                 .dropdown-content a {
                     color: black;
-                    padding: 8px 16px;
+                    padding: 8px;
                     text-decoration: none;
                     display: block;
+                    font-size: 18px;
+                    background: lightcyan;
                 }
                 
                 .dropdown-content a:hover {
-                    background-color: #ddd;
+                    background: #007bff;
+                    padding: 8px;
+                    color: snow;
+                    font-size: 20px;
                 }
                 
                 .dropdown2:hover .dropdown-content {
                     display: block;
-                }
-                
-                .dropdown2:hover .dropbtn {
-                    background-color: #3e8e41;
                 }
                 /*drop down css*/
                 
@@ -160,6 +153,17 @@
                     font-weight: bold;
                 }
                 
+                #paste {
+                    display: none;
+                    width: 10%;
+                    position: absolute;
+                    box-shadow: 3px 3px 10px rgba(0, 0, 0, .5);
+                    background: #fff;
+                    list-style-type: none;
+                    padding: 0;
+                    border-radius: 10px;
+                }
+                
                 #tasks {
                     width: 15%;
                     position: absolute;
@@ -168,6 +172,7 @@
                     list-style-type: none;
                     padding: 0;
                     border-radius: 10px;
+                    z-index: 100;
                 }
                 
                 #tasks li {
@@ -200,4 +205,131 @@
                     display: flex;
                     align-items: center;
                     flex-direction: column;
+                }
+                /*===========Additional css for resources page===============*/
+                
+                .res_col ul li a:hover {
+                    font-weight: 600 !important;
+                }
+                
+                div#main {
+                    width: 100%;
+                    text-align: left;
+                    margin-left: auto;
+                    margin-right: auto;
+                    /*  border-left: 3px solid #C8D9F9       */
+                }
+                /* ------------------------ standard  tags ------------------------ */
+                
+                H1 {
+                    font-size: 240%;
+                    color: #003399;
+                    color: #0066CC;
+                    font-weight: normal;
+                    margin: 0px 0px 10px 0px;
+                    background-color: #C8D9F9;
+                    padding-bottom: 1px;
+                    padding-left: 20px;
+                    padding-right: 5px;
+                    padding-top: 1px;
+                }
+                
+                H2 {
+                    font-size: 145%;
+                    font-weight: normal;
+                    color: #003399;
+                    color: #0066CC;
+                    margin: 0px 0px 10px 0px;
+                    padding-bottom: 0px;
+                    padding-left: 20px;
+                    padding-right: 5px;
+                    padding-top: 10px;
+                }
+                
+                H3 {
+                    font-size: 130%;
+                    color: #003399;
+                    color: #0066CC;
+                    font-weight: bold;
+                    margin: 0px 0px 10px 20px;
+                    padding-bottom: 0px;
+                    padding-left: 20px;
+                    padding-right: 5px;
+                    padding-top: 10px;
+                    font-weight: normal;
+                }
+                
+                H4 {
+                    font-size: 100%;
+                    color: #444444;
+                    font-weight: bold;
+                    margin: 0px 0px 0px 20px;
+                    padding-bottom: 0px;
+                    padding-left: 20px;
+                    padding-right: 5px;
+                    padding-top: 10px;
+                }
+                /* ------------------------ tags for resource page ------------------------ */
+                
+                div.res_col {
+                    float: left;
+                    width: 300px;
+                    padding: 10px;
+                }
+                
+                div.res_colw {
+                    float: left;
+                    width: 500px;
+                    padding: 10px;
+                }
+                
+                .res_col a,
+                .res_colw a {
+                    margin-left: 10px;
+                    color: #003399;
+                    text-decoration: none;
+                    margin-right: 0;
+                    font-weight: normal;
+                    FONT-SIZE: 100%;
+                }
+                
+                .res_col ul,
+                .res_colw ul {
+                    margin: 0px;
+                    padding: 0px;
+                }
+                
+                .res_col li,
+                .res_colw li {
+                    FONT-SIZE: 80%;
+                    margin-left: 20px;
+                    padding-left: 0px;
+                }
+                
+                .res_col h5,
+                .res_colw h5 {
+                    margin: 10px 5px 5px 0px;
+                    padding: 5px 5px 5px 5px;
+                    color: #003399;
+                    font-weight: 500;
+                    background-color: #C8D9F9;
+                    font-size: 20px;
+                }
+                
+                .res_col p,
+                .res_colw p {
+                    margin-left: 0px;
+                    font-size: 80%;
+                }
+                
+                .res_col h4,
+                .res_colw h4 {
+                    margin: 0px 5px 5px 0px;
+                    color: #000000;
+                    font-weight: normal;
+                    padding: 0px;
+                }
+                
+                LI table.examples {
+                    margin: 0px
                 }
