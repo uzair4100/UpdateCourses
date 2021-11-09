@@ -28,7 +28,7 @@
     },
     "dependencies": {
         "cheerio": "^1.0.0-rc.3",
-        "date-and-time": "^0.13.1",
+        "date-and-time": "^0.14.2",
         "electron-build": "0.0.3",
         "jquery": "^3.5.1",
         "jquery-ui": "^1.12.1",
