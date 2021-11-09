@@ -7,7 +7,8 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "electron .",
         "pack": "electron-builder --dir",
-        "dist": "electron-builder"
+        "dist": "electron-builder",
+        "dev": "nodemon --watch * --exec \"electron . --debug\" -e js,json,html,css"
     },
     "build": {
         "appId": "com.resource2021.quickstart",
@@ -20,7 +21,7 @@
     "license": "MIT",
     "devDependencies": {
         "cross-env": "^7.0.1",
-        "electron": "^9.2.0",
+        "electron": "^6.1.12",
         "electron-builder": "^22.8.0",
         "electron-packager": "^14.2.1",
         "electron-prebuilt": "^1.4.13"
@@ -34,6 +35,7 @@
         "jquery-ui-dist": "^1.12.1",
         "marked": "^1.1.1",
         "mv": "^2.1.1",
+        "nodemon": "^2.0.14",
         "open": "^7.0.4",
         "pretty": "^2.0.0",
         "recursive-copy": "^2.0.10",

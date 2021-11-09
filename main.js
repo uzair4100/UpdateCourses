@@ -11,10 +11,10 @@ var window;
 app.on('ready', function() {
     //create new window
     mainWindow = new BrowserWindow({
-        minWidth: 1320,
-        width: 1320,
-        minHeight: 985,
-        height: 985,
+        minWidth: 1150,
+        width: 1150,
+        minHeight: 855,
+        height: 855,
         webPreferences: {
             nodeIntegration: true
         }

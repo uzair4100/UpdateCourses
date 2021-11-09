@@ -4,7 +4,7 @@ const path = require('path');
 const http = require('http');
 const fs = require('fs');
 var cheerio = require('cheerio');
-const { shell, clipboard, webFrame } = require('electron');
+const { shell, clipboard } = require('electron');
 var pretty = require('pretty');
 var copy = require('recursive-copy');
 const date = require('date-and-time');
@@ -13,9 +13,6 @@ var mv = require('mv');
 
 
 $(document).ready(function() {
-
-    // Set the zoom factor to 92%
-    webFrame.setZoomFactor(0.90);
 
     $('#tasks,#spin,#status').hide();
     $('.dropdown2').hide();
@@ -208,8 +205,7 @@ $(document).ready(function() {
             if (!files || files.length === 0)
                 files = (e.dataTransfer ? e.dataTransfer.files : e.originalEvent.dataTransfer.files);
             console.log(files)
-                //let all = Object.keys(files).map(k => files[k]).filter(file => path.extname(file.name) == ".docx").map(file => file.name)
-                // console.log(all);
+            console.log(files[0].path);
             filePath = files[0].path;
             processPath(filePath);
         });
@@ -287,15 +283,9 @@ $(document).ready(function() {
                 console.log(thisElement.text());
             }
 
-            let leftSpace = document.documentElement.clientWidth - event.pageX;
-
-            let topValue = (event.pageY) + 'px',
-                leftValue = (event.pageX) + 'px';
-            leftSpace < 210 ? leftValue = (event.pageX) - 200 + 'px' : "";
-            // pills-tabContent
             $('#tasks').css({
-                top: topValue,
-                left: leftValue
+                top: (event.pageY) + 'px',
+                left: (event.pageX) + 'px'
             }).show();
         }
 
@@ -319,7 +309,7 @@ $(document).ready(function() {
         $('#selectTask').prop("selected", true);
 
         fileDisplayName = $('#fileDisplayName').val();
-        fileExtension = ` ${$('#fileExtName').val()}`;
+        fileExtension = $('#fileExtName').val();
 
         switch (taskSelected) {
 
@@ -404,7 +394,7 @@ $(document).ready(function() {
                     filePath = '';
                 } else {
                     if (thisElement.attr('href')) {
-                        element = `<li><a href="${thisElement.attr('href')}">${fileDisplayName}</a>${fileExtension}</li>`;
+                        element = `<li><a href="${thisElement.attr('href')}">${fileDisplayName}</a> ${fileExtension}</li>`;
                         thisElement.parent('li').replaceWith(element);
                     } else {
                         thisElement.text(fileDisplayName);
@@ -594,22 +584,22 @@ $(document).ready(function() {
                     moveToUploaded(MOVE_FROM, MOVE_TO)
                 }, 500);
 
-
+                /*
                 console.log(totalFiles)
                     //update manifest file
-                    /* todayDate = date.format(new Date(), 'YYYYMMDDHHmmss');
-                     cheerM('mydate').text(todayDate);
-                     cheerM('file').each(function(index, file) {
-                             if (allFiles.includes($(this).text())) {
-                                 cheerM(this).attr("date", todayDate)
-                                     //console.log($(this).attr('date').val())
-                             }
-                         })
-                         //console.log(cheerM.html())
-                     content_manifest = cheerM.html();
-                     newData_manifest = fs.writeFileSync(manifestFile, content_manifest, 'utf8')
-                     console.log(newData_manifest);*/
-
+                todayDate = date.format(new Date(), 'YYYYMMDDHHmmss');
+                cheerM('mydate').text(todayDate);
+                cheerM('file').each(function(index, file) {
+                        if (totalFiles.includes($(this).text())) {
+                            cheerM(this).attr("date", todayDate)
+                                //console.log($(this).attr('date').val())
+                        }
+                    })
+                    //console.log(cheerM.html())
+                content_manifest = cheerM.html();
+                newData_manifest = fs.writeFileSync(manifestFile, content_manifest, 'utf8')
+                console.log(newData_manifest);
+                */
 
                 //reset filepath
                 setTimeout(() => {
