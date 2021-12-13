@@ -33,7 +33,7 @@
                 
                 #selectFile {
                     width: 100%;
-                    height: 90px;
+                    height: 60px;
                     background: #fff;
                     border: 2px dashed darkcyan;
                     display: flex;
@@ -43,23 +43,13 @@
                     margin-top: 14px;
                 }
                 
-                #selectFile:hover {
-                    opacity: 0.5;
-                }
-                
-                #cloud {
-                    background: white;
-                    border-radius: 16px;
-                    height: 75px;
-                }
-                
                 #fileDisplayName,
                 #fileExtName {
                     font-size: 18px;
                     color: black;
                     font-weight: 600;
-                    height: 80px;
-                    overflow: hidden;
+                    min-height: 50px;
+                    overflow: auto;
                 }
                 
                 .customLabel {
@@ -120,18 +110,19 @@
                 
                 .dropdown-content a {
                     color: black;
-                    padding: 8px;
+                    padding: 4px;
                     text-decoration: none;
                     display: block;
-                    font-size: 18px;
+                    font-size: 16px;
                     background: lightcyan;
+                    text-align: center;
                 }
                 
                 .dropdown-content a:hover {
                     background: #007bff;
                     padding: 8px;
                     color: snow;
-                    font-size: 20px;
+                    font-weight: bold;
                 }
                 
                 .dropdown2:hover .dropdown-content {
@@ -140,10 +131,9 @@
                 /*drop down css*/
                 
                 #selectedFileName {
-                    font-size: 22px;
-                    font-family: sans-serif;
-                    font-weight: 700;
-                    color: black;
+                    font-size: 16px;
+                    font-family: Verdana;
+                    font-weight: 600;
                 }
                 
                 #heading {

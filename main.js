@@ -13,13 +13,13 @@ app.on('ready', function() {
     mainWindow = new BrowserWindow({
         minWidth: 1150,
         width: 1150,
-        minHeight: 855,
-        height: 855,
+        minHeight: 790,
+        height: 790,
         webPreferences: {
             nodeIntegration: true
         }
     });
-    // mainWindow.openDevTools();
+    //mainWindow.openDevTools();
     //mainWindow.autoHideMenuBar = true;
     // load html
     mainWindow.loadURL(url.format({
@@ -27,6 +27,7 @@ app.on('ready', function() {
         protocol: 'file',
         slashes: true
     }));
+    mainWindow.removeMenu()
 
 });
 

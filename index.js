@@ -14,8 +14,8 @@ var mv = require('mv');
 
 $(document).ready(function() {
 
-    // Set the zoom factor to 92%
-    webFrame.setZoomFactor(0.90);
+    // Set the zoom factor to 93%
+    webFrame.setZoomFactor(0.93);
 
     $('#tasks,#spin,#status').hide();
     $('.dropdown2').hide();
@@ -26,7 +26,7 @@ $(document).ready(function() {
         shell.openExternal(this.href);
     });
 
-    var source, alertFile, newsFile, year, course, element, files, filename, fileExtension, manifestFile, data_manifest, newData_manifest, todayDate, newPath = [],
+    var source, alertFile, newsFile,newsFileName="", year, course, element, files, filename, fileExtension, manifestFile, data_manifest, newData_manifest, todayDate, newPath = [],
         totalFiles = [],
         filesToAdd = [],
         filesToDelete = [];
@@ -35,7 +35,7 @@ $(document).ready(function() {
         data_resource, newData_resource, data_alert, newData_alert, data_news, newData_news, content, content_alert,
         content_news, content_manifest, html, taskSelected, thisElement, fileDisplayName, filePath, fileToDelete, oldFileName, originalName, originalExt, yearCalender, MOVE_FROM = [],
         MOVE_TO = [],
-        editorNews, editorAlert, toolbarOptions = "",
+        editorNews, editorAlert,isWebNews=Boolean, toolbarOptions = "",
         img1, img2, img1css,
         options = "",
         pathForFile;
@@ -46,35 +46,14 @@ $(document).ready(function() {
     //find source path
     $("#wrapper-inner").change(function() {
 
-        yearCalender = $('#yearCalender').find("input[type=radio]:checked").siblings('label').text();
+        // yearCalender = $('#yearCalender').find("input[type=radio]:checked").siblings('label').text();
+        yearCalender = $('#yearCalender').find('option').filter(':selected').text().trim();
+
         course = $('#courses').find("input[type=radio]:checked").siblings('label').text();
 
-        /*
-                // fill years dynamically
-                yearArray = "\\\\vsl-file01\\coursesdev$\\courses\\" + yearCalender + "\\" + course;
-                yearArray = fs.readdirSync(yearArray).filter(function(yr) {
-                    return yr.includes("year") && !yr.includes("Copy");
-                }).sort(function(a, b) {
-                    return a.localeCompare(b, undefined, {
-                        numeric: true,
-                        sensitivity: 'base'
-                    });
-                });;
-                $("#year").html("");
-
-                yearArray.forEach(function(yrs) {
-                    let yearName = `<div class="form-check customLabel">
-                                                             <input type="radio" class="form-check-input" name="years" id="${yrs}" value="${yrs}">
-                                                             <label class="form-check-label" for="${yrs}">${yrs}</label>
-                                                         </div>`
-                    $("#year").append(yearName);
-                })
-
-                console.log(yearArray);
-        */
         year = $('#year').find("input[type=radio]:checked").siblings('label').text();
         console.log(year);
-
+        course == "CLgreek" ? course = "classicalgreek" : ""; //classicalgreek was not adjusting on screen
         if (course && year) { $('.dropdown2').fadeIn(); }
 
         $("#newsSection").empty();
@@ -84,10 +63,13 @@ $(document).ready(function() {
         $('<div id="alertFile"></div>').appendTo('#alertSection');
         $('<div id="newsFile"></div>').appendTo('#newsSection');
 
+        //find news file for web and courseapp
+        fs.existsSync(`\\\\vsl-file01\\coursesdev$\\courses\\${yearCalender}\\${course}\\${year}\\web_news.html`)?newsFileName="web_news.html":newsFileName="news.html";
+
         //set attr
         var resource_file_link = "https://courses.languages.vic.edu.au/" + yearCalender + "/" + course + "/" + year + "/resources.html";
         var alert_file_link = "https://courses.languages.vic.edu.au/" + yearCalender + "/" + course + "/" + year + "/alert.html";
-        var news_file_link = "https://courses.languages.vic.edu.au/" + yearCalender + "/" + course + "/" + year + "/news.html";
+        var news_file_link = "https://courses.languages.vic.edu.au/" + yearCalender + "/" + course + "/" + year + "/" + newsFileName;
 
         //activate live button links
         $('#resource_file_link').attr('href', resource_file_link);
@@ -97,7 +79,7 @@ $(document).ready(function() {
 
         source = "\\\\vsl-file01\\coursesdev$\\courses\\" + yearCalender + "\\" + course + "\\" + year + "\\resources.html";
         alertFile = "\\\\vsl-file01\\coursesdev$\\courses\\" + yearCalender + "\\" + course + "\\" + year + "\\alert.html";
-        newsFile = "\\\\vsl-file01\\coursesdev$\\courses\\" + yearCalender + "\\" + course + "\\" + year + "\\news.html";
+        newsFile = "\\\\vsl-file01\\coursesdev$\\courses\\" + yearCalender + "\\" + course + "\\" + year + "\\" + newsFileName;
         manifestFile = "\\\\vsl-file01\\coursesdev$\\courses\\" + yearCalender + "\\" + course + "\\" + year + "\\manifest.xml";
 
         //source = path.join(require('os').homedir(), 'Desktop/resources.html');
@@ -126,6 +108,8 @@ $(document).ready(function() {
         cheer2 = cheerio.load(data_alert);
         cheer3 = cheerio.load(data_news);
         cheerM = cheerio.load(data_manifest, { xmlMode: true });
+
+        cheer3('.news').length ?isWebNews=true:isWebNews=false;   // handle news content for webApp and CourseApp
 
         //load file content
         $("#link").html(data_resource);
@@ -189,13 +173,13 @@ $(document).ready(function() {
 
         });
 
-        $('#selectFile').on("dragleave", (e) => {
+        $(document).on("dragleave", (e) => {
             $('#selectFile').css({
                 "opacity": "1"
             })
         });
 
-        $('#selectFile').on("drop", (e) => {
+        $(document).on("drop", (e) => {
 
             e.preventDefault();
             e.stopPropagation();
@@ -233,7 +217,7 @@ $(document).ready(function() {
     });
 
     //drag drop
-    $('#selectFile').on("dragover", (e) => {
+    $(document).on("dragover", (e) => {
         e.preventDefault();
         e.stopPropagation();
         $('#selectFile').css({
@@ -542,6 +526,10 @@ $(document).ready(function() {
                     let N = cheerio.load(editorNews.root.innerHTML)
                     N('img').first().attr({ "src": img1, "style": img1css })
                     N('img').last().attr('src', img2)
+                    if(isWebNews){
+                        N('img').attr('style','float: left; margin-right: 5px;');
+                        N('body').html(`<div class="news">${N('body').html()}</div>`)
+                    }
                     content_news = N('body').html()
                         //content_news = editorNews.root.innerHTML;
                     content_news = content_news.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#xA0;/g, '').replace(/&apos;/g, "'");

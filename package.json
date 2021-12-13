@@ -1,5 +1,5 @@
 {
-    "name": "update_courses_2021",
+    "name": "update_courses",
     "version": "2.0.1",
     "description": "update course files",
     "main": "main.js",

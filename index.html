@@ -34,20 +34,13 @@
                         <!--calender year-->
                         <div id="yearCalender" class="d-flex mb-3">
 
-                            <div class="form-check form-check-inline customLabel">
-                                <input type="radio" class="form-check-input" name="yearCalender" id="2021">
-                                <label class="form-check-label" for="2021">2021</label>
-                            </div>
-
-                            <div class="form-check form-check-inline customLabel">
-                                <input type="radio" class="form-check-input" name="yearCalender" id="2022" checked>
-                                <label class="form-check-label" for="2022">2022</label>
-                            </div>
-
-                            <div class="form-check form-check-inline customLabel">
-                                <input type="radio" class="form-check-input" name="yearCalender" id="2023">
-                                <label class="form-check-label" for="2023">2023</label>
-                            </div>
+                            <select class="form-select form-select">
+                                <option>2021</option>
+                                <option selected>2022</option>
+                                <option>2023</option>
+                                <option>2024</option>
+                                <option>2025</option>
+                              </select>
 
                         </div>
                         <!--end calender year-->
@@ -76,7 +69,7 @@
 
                                 <div class="form-check customLabel">
                                     <input type="radio" class="form-check-input" name="course" id="classicalgreek">
-                                    <label class="form-check-label" for="classicalgreek">classicalgreek</label>
+                                    <label class="form-check-label" for="classicalgreek">CLgreek</label>
                                 </div>
 
                                 <div class="form-check customLabel">
@@ -205,13 +198,13 @@
 
                             <ul class="nav nav-pills d-flex justify-content-between" id="pills-tab" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="tabs-1" data-toggle="pill" href="#link">Resource.html</a>
+                                    <a class="nav-link active" id="tabs-1" data-toggle="pill" href="#link">Resource Library</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="tabs-2" data-toggle="pill" href="#alertSection">Alert.html</a>
+                                    <a class="nav-link" id="tabs-2" data-toggle="pill" href="#alertSection">Alert</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="tabs-3" data-toggle="pill" href="#newsSection">News.html</a>
+                                    <a class="nav-link" id="tabs-3" data-toggle="pill" href="#newsSection">News</a>
                                 </li>
                             </ul>
 
@@ -220,7 +213,7 @@
 
                             <!--view buttons-->
                             <div class="dropdown2">
-                                <button class="btn btn-info btn-lg">Live Links</button>
+                                <button class="btn-outline-info">Web Links</button>
                                 <div class="dropdown-content">
                                     <a class="dropdown-item" href="https://getbootstrap.com/docs/4.0/getting-started/download/" id="resource_file_link"> Resource File</a>
                                     <a class="dropdown-item" href="https://getbootstrap.com/docs/4.0/getting-started/download/" id="alert_file_link">Alert File</a>
@@ -259,43 +252,43 @@
 
             <!--Choose file and name of file-->
             <div class="my-2">
-                <div class="d-flex justify-content-between" id="fileOptions">
-                    <div class="mb-2" id="moveToUpload">
+                <div class="d-flex justify-content-around" id="fileOptions">
+                    <!-- <div class="mb-2" id="moveToUpload">
                         <label class="customLabel">Move</label>
-                        <input type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="danger" data-on="YES" data-off="NO">
-                    </div>
-                    <!--Keep old file-->
-                    <div class="mb-2" id="keepOldFile">
+                        <input type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="danger" data-on="YES" data-off="NO" data-height="10">
+                    </div>-->
+
+                    <div class="mb-2" id="keepOldFile" data-bs-toggle="tooltip" data-bs-placement="top" title="Check this button when editing file and want to keep old file in resources folder">
                         <label class="customLabel">Keep Old File</label>
-                        <input type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="danger" data-on="YES" data-off="NO">
+                        <input type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="danger" data-on="YES" data-off="NO" data-height="10">
                     </div>
                     <div class="mb-1" id="updateAlertFile">
                         <label class="customLabel">Update Alert File</label>
-                        <input name="filetype" type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="danger" data-on="YES" data-off="NO" value="alert.html">
+                        <input name="filetype" type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="danger" data-on="YES" data-off="NO" data-height="10" value="alert.html">
                     </div>
                     <div class="mb-1" id="updateNewsFile">
                         <label class="customLabel">Update News File</label>
-                        <input name="filetype" type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="danger" data-on="YES" data-off="NO" value="news.html">
+                        <input name="filetype" type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="danger" data-on="YES" data-off="NO" data-height="10" value="news.html">
                     </div>
 
                     <div class="mb-1" id="updateResourceFile">
                         <label class="customLabel">Update Resource File</label>
-                        <input name="filetype" type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="danger" data-on="YES" data-off="NO" value="resources.html" checked>
+                        <input name="filetype" type="checkbox" data-toggle="toggle" data-onstyle="primary" data-offstyle="danger" data-on="YES" data-off="NO" data-height="10" value="resources.html" checked>
                     </div>
                 </div>
                 <!--input field-->
                 <div class="input-group mb-3" id="input_field">
-                    <div class="input-group-prepend" style="height: 80px;">
+                    <div class="input-group-prepend" style="height: 50px;">
                         <span class="input-group-text" id="basic-addon3">File Name</span>
                     </div>
-                    <textarea class="form-control d-block" placeholder="e.g. Coursebook 1 , Workbook 1 , OLB" id="fileDisplayName" style="width: initial;"></textarea>
-                    <input type="text" class="form-control" placeholder="e.g. (PDF) or (WS 1-8)" id="fileExtName">
+                    <textarea class="form-control d-block" placeholder="e.g. Coursebook 1 , Workbook 1 , OLB" id="fileDisplayName" style="width: initial;height:50px;"></textarea>
+                    <input style="height: 50px;" type="text" class="form-control" placeholder="e.g. (PDF) or (WS 1-8)" id="fileExtName">
                 </div>
 
                 <!--Choose or Drag File here-->
                 <div id="selectFile">
-                    <button id="chooseFile" class="btn btn-dark"> Choose File</button>
-                    <div id="cloud"><img src="images/cloud2.png" width="65px" alt="icon"></div>
+                    <button id="chooseFile" class="btn-outline-dark"> Choose File</button>
+                    <div id="cloud"><img src="images/cloud2.png" width="50" height="50" alt="icon"></div>
                     <div id="selectedFileName">Drag File Here</div>
                 </div>
 
